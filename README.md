@@ -1,3 +1,5 @@
+***Español** · [English](README.en.md)*
+
 # Gincana
 
 App para una gincana de empleados de un hospital: 10 equipos rotando por 10 estaciones de 5
