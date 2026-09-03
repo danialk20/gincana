@@ -1,0 +1,27 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "gincana",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "gincana-app",
+        "run",
+        "dev"
+      ],
+      "port": 5173
+    },
+    {
+      "name": "gincana-local",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "gincana-app",
+        "run",
+        "dev:local"
+      ],
+      "port": 5174
+    }
+  ]
+}

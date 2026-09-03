@@ -1,0 +1,31 @@
+# ─── Dependencias y compilados ───
+node_modules/
+dist/
+*.local
+
+# ─── Firebase ───
+.firebase/
+firebase-debug.log
+*-debug.log
+
+# ─── Datos reales del evento ───
+# Fotos de los equipos, nombres del personal del hospital, puntajes y respaldos.
+# Nada de esto debe salir del computador: el repositorio es solo el código.
+/gincana-respaldo*.json
+/gincana-puntajes*.csv
+/*.png
+/*.jpg
+/*.jpeg
+/*.docx
+/*.pdf
+/planillas*
+# Por nombre y no solo por extensión: hay fotos guardadas sin extensión.
+/grupo*
+/logo*
+
+# ─── Preferencias locales del editor ───
+.claude/settings.local.json
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store

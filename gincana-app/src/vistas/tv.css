@@ -1,0 +1,648 @@
+/* Estilos exclusivos del televisor: fondo oscuro, tipografía enorme, todo
+   dimensionado en vw/vh para que se vea igual en cualquier tamaño de pantalla. */
+
+.tv {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 20% 0%, #134e4a 0%, #0b1220 55%, #060910 100%);
+  color: #f8fafc;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.tv-encabezado {
+  display: flex;
+  align-items: baseline;
+  gap: 1.4vw;
+  padding: 2vh 3vw 0;
+  flex-shrink: 0;
+}
+
+.tv-encabezado h1 {
+  margin: 0;
+  font-size: 2.8vw;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.tv-encabezado .contexto {
+  font-size: 1.4vw;
+  color: #5eead4;
+  font-weight: 600;
+}
+
+.tv-cuerpo {
+  flex: 1;
+  min-height: 0;
+  padding: 1.5vh 3vw 6vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.tv-puntos {
+  display: flex;
+  gap: 0.6vw;
+  margin-left: auto;
+}
+
+.tv-punto {
+  width: 0.85vw;
+  height: 0.85vw;
+  border-radius: 999px;
+  background: #334155;
+}
+
+.tv-punto[data-activo='si'] {
+  background: #5eead4;
+}
+
+/* ── Presentación de equipos ── */
+
+.tv-presentacion {
+  display: grid;
+  grid-template-columns: 32vw 1fr;
+  gap: 4vw;
+  height: 100%;
+  align-items: center;
+  padding: 0 5vw;
+}
+
+.tv-foto {
+  width: 32vw;
+  height: 32vw;
+  max-height: 68vh;
+  max-width: 68vh;
+  object-fit: cover;
+  border-radius: 2vw;
+  box-shadow: 0 2vh 6vh rgb(0 0 0 / 0.55);
+}
+
+.tv-foto-vacia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 8vw;
+  color: rgb(255 255 255 / 0.85);
+}
+
+.tv-nombre-equipo {
+  font-size: 5vw;
+  font-weight: 900;
+  line-height: 1.02;
+  margin: 0 0 2.2vh;
+  letter-spacing: -0.02em;
+}
+
+.tv-integrantes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.1vh;
+}
+
+.tv-integrantes li {
+  font-size: 2.2vw;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 1.2vw;
+}
+
+.tv-vineta {
+  width: 1vw;
+  height: 1vw;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+/* Flechas grandes a los lados, para pasar los equipos a mano. */
+.tv-flecha {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 4vw;
+  height: 12vh;
+  border: none;
+  border-radius: 1vw;
+  background: rgb(255 255 255 / 0.1);
+  color: #f8fafc;
+  font-size: 3vw;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.tv-flecha:hover:not(:disabled) {
+  background: rgb(94 234 212 / 0.25);
+}
+
+.tv-flecha:disabled {
+  opacity: 0.15;
+  cursor: default;
+}
+
+.tv-flecha.izquierda {
+  left: 0.5vw;
+}
+
+.tv-flecha.derecha {
+  right: 0.5vw;
+}
+
+/* ── Todos los equipos juntos (última diapositiva) ── */
+
+/* Rejilla fija de 5 columnas por 2 filas, pensada para los 10 equipos. No cambia
+   de forma según cuántos haya: la foto y la etiqueta tienen medidas definidas y
+   siempre ocupan lo mismo. Todo va en vh para que escale con el televisor sin
+   dejar de ser proporcional entre sí. */
+.tv-todos {
+  /* El tope por ancho solo entra en juego en pantallas de proporción inusual
+     (más altas que anchas); en un televisor normal manda siempre el 26vh. */
+  --lado-foto: min(26vh, 17vw);
+  /* Da para dos líneas de nombre. Todas las tarjetas reservan este alto, tengan
+     el nombre corto o largo, para que la rejilla no se desalinee. */
+  --alto-etiqueta: 7.5vh;
+
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, var(--lado-foto));
+  grid-auto-rows: calc(var(--lado-foto) + var(--alto-etiqueta));
+  gap: 3vh 2vw;
+  justify-content: center;
+  align-content: center;
+}
+
+.tv-tarjeta-equipo {
+  width: var(--lado-foto);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8vh;
+}
+
+.tv-foto-chica {
+  width: var(--lado-foto);
+  height: var(--lado-foto);
+  object-fit: cover;
+  border-radius: 1.5vh;
+  box-shadow: 0 1vh 3vh rgb(0 0 0 / 0.45);
+}
+
+.tv-foto-chica.tv-foto-vacia {
+  font-size: 10vh;
+}
+
+.tv-tarjeta-equipo .etiqueta {
+  width: 100%;
+  height: calc(var(--alto-etiqueta) - 0.8vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8vh;
+  border-bottom: 0.35vh solid;
+  padding-bottom: 0.4vh;
+  overflow: hidden;
+}
+
+.tv-tarjeta-equipo .numero {
+  flex-shrink: 0;
+  width: 3.2vh;
+  height: 3.2vh;
+  border-radius: 0.6vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.9vh;
+  font-weight: 900;
+  color: #fff;
+}
+
+/* Hasta dos líneas. Si el nombre es todavía más largo se corta con puntos
+   suspensivos, en vez de empujar la foto o descuadrar la fila. */
+.tv-tarjeta-equipo .nombre {
+  font-size: 2.2vh;
+  line-height: 1.15;
+  font-weight: 800;
+  text-align: center;
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+/* ── Desempeño: una sola tabla ── */
+
+.tv-matriz-caja {
+  height: 100%;
+  overflow: auto;
+}
+
+.tv-matriz {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.tv-matriz th,
+.tv-matriz td {
+  border: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.tv-matriz thead th {
+  padding: 0.8vh 0.3vw;
+  vertical-align: bottom;
+  background: rgb(255 255 255 / 0.05);
+}
+
+.tv-matriz thead th .orden {
+  display: block;
+  font-size: 1.1vw;
+  font-weight: 800;
+  color: #5eead4;
+}
+
+.tv-matriz thead th .corto {
+  display: block;
+  font-size: 1.05vw;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #e2e8f0;
+}
+
+.tv-matriz thead th .unidad {
+  display: block;
+  font-size: 0.85vw;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.tv-matriz .esquina {
+  width: 15vw;
+  text-align: left;
+  padding-left: 1vw;
+  font-size: 1.1vw;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tv-matriz tbody th.equipo {
+  text-align: left;
+  padding: 0 1vw;
+  font-size: 1.5vw;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: rgb(255 255 255 / 0.03);
+}
+
+.tv-matriz tbody th.equipo .punto {
+  display: inline-block;
+  width: 0.8vw;
+  height: 0.8vw;
+  border-radius: 999px;
+  margin-right: 0.6vw;
+  vertical-align: middle;
+}
+
+.tv-matriz tbody td {
+  text-align: center;
+  font-size: 2.1vw;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #f1f5f9;
+}
+
+.tv-matriz tbody td[data-vacia='si'] {
+  color: #475569;
+  font-size: 1.6vw;
+}
+
+.tv-matriz tbody td[data-lider='si'] {
+  color: #5eead4;
+  background: rgb(94 234 212 / 0.09);
+}
+
+/* ── Podio y tabla final ── */
+
+.tv-final {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+}
+
+.tv-podio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3vw;
+  align-items: end;
+  justify-items: center;
+  flex-shrink: 0;
+  padding: 0 8vw;
+}
+
+/* Columna flexible centrada: así queda alineado tanto el equipo que tiene foto
+   (un <img>) como el que no la tiene (un bloque con el número). */
+.tv-cajon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 16vw;
+}
+
+.tv-foto-podio {
+  width: 11vh;
+  height: 11vh;
+  object-fit: cover;
+  border-radius: 1vw;
+  margin: 0 auto 0.6vh;
+}
+
+.tv-foto-podio.tv-foto-vacia {
+  font-size: 5vh;
+}
+
+.tv-cajon .medalla {
+  font-size: 2.2vw;
+  line-height: 1;
+}
+
+.tv-cajon .nombre {
+  font-size: 1.6vw;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.tv-cajon .puntos {
+  font-size: 1.3vw;
+  color: #5eead4;
+  font-weight: 700;
+}
+
+.tv-cajon[data-puesto='1'] {
+  transform: scale(1.15);
+}
+
+.tv-tabla-final {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.3vw;
+  flex-shrink: 0;
+}
+
+.tv-tabla-final th,
+.tv-tabla-final td {
+  padding: 0.55vh 0.7vw;
+  text-align: left;
+  border-bottom: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.tv-tabla-final th {
+  color: #94a3b8;
+  font-size: 1vw;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tv-tabla-final td.num,
+.tv-tabla-final th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.tv-tabla-final .total {
+  font-weight: 800;
+  color: #5eead4;
+  font-size: 1.6vw;
+}
+
+/* ── Selector de pantalla ── */
+
+.tv-selector {
+  position: fixed;
+  bottom: 1.2vh;
+  right: 2vw;
+  display: flex;
+  gap: 0.5vw;
+  z-index: 3;
+}
+
+.tv-selector button {
+  background: rgb(255 255 255 / 0.08);
+  color: #94a3b8;
+  border: none;
+  border-radius: 0.6vw;
+  padding: 0.7vh 1.2vw;
+  font-size: 1vw;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tv-selector button[aria-selected='true'] {
+  background: #5eead4;
+  color: #062925;
+}
+
+/* ── Estados ── */
+
+.tv-vacio {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 2vw;
+  color: #94a3b8;
+  padding: 0 10vw;
+  line-height: 1.5;
+}
+
+.tv-candado {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5vh;
+}
+
+.tv-candado input {
+  font-size: 4vw;
+  width: 9em;
+  padding: 1vh 1vw;
+  text-align: center;
+  letter-spacing: 0.4em;
+  border-radius: 1vw;
+  border: 0.3vw solid rgb(255 255 255 / 0.2);
+  background: rgb(255 255 255 / 0.07);
+  color: #f8fafc;
+  font-variant-numeric: tabular-nums;
+}
+
+.tv-candado input:focus {
+  outline: none;
+  border-color: #5eead4;
+}
+
+.tv-boton-revelar {
+  background: #5eead4;
+  color: #062925;
+  border: none;
+  border-radius: 0.8vw;
+  padding: 1.4vh 3vw;
+  font-size: 1.6vw;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.tv-alerta-red {
+  position: fixed;
+  top: 2vh;
+  right: 3vw;
+  z-index: 4;
+  background: #b91c1c;
+  color: #fff;
+  padding: 0.8vh 1.4vw;
+  border-radius: 999px;
+  font-size: 1.1vw;
+  font-weight: 700;
+}
+
+/* ── Ceremonia de premiación ── */
+
+.tv-ceremonia {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3vh;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tv-ceremonia .rotulo {
+  display: flex;
+  align-items: center;
+  gap: 1.5vw;
+  margin: 0;
+  font-size: 4.5vw;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: #5eead4;
+  text-align: center;
+  line-height: 1;
+}
+
+.tv-ceremonia .rotulo .medalla {
+  font-size: 5vw;
+}
+
+.tv-ganadores {
+  display: flex;
+  gap: 4vw;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.tv-ganador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2vh;
+  text-align: center;
+}
+
+.tv-foto-ganador,
+.tv-marco-misterio {
+  width: 34vh;
+  height: 34vh;
+  object-fit: cover;
+  border-radius: 2vh;
+}
+
+/* Aparece con un pequeño golpe de escala: es el momento de la sorpresa. */
+.tv-foto-ganador {
+  box-shadow: 0 2vh 6vh rgb(0 0 0 / 0.6);
+  animation: revelar 0.55s cubic-bezier(0.22, 1.2, 0.36, 1) both;
+}
+
+.tv-foto-ganador.tv-foto-vacia {
+  font-size: 14vh;
+}
+
+.tv-marco-misterio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.6vh dashed rgb(148 163 184 / 0.55);
+  background: rgb(255 255 255 / 0.04);
+  font-size: 16vh;
+  font-weight: 900;
+  color: rgb(148 163 184 / 0.5);
+}
+
+.tv-ganador .nombre {
+  font-size: 3vw;
+  font-weight: 900;
+  line-height: 1.05;
+  animation: revelar 0.55s cubic-bezier(0.22, 1.2, 0.36, 1) 0.12s both;
+}
+
+.tv-ganador .puntos {
+  font-size: 1.8vw;
+  font-weight: 700;
+  color: #5eead4;
+  animation: revelar 0.55s cubic-bezier(0.22, 1.2, 0.36, 1) 0.2s both;
+}
+
+.tv-ganador .tapado {
+  color: rgb(148 163 184 / 0.45);
+  letter-spacing: 0.3em;
+  animation: none;
+}
+
+.tv-ceremonia .pista {
+  margin: 0;
+  font-size: 1.2vw;
+  color: #64748b;
+}
+
+@keyframes revelar {
+  from {
+    opacity: 0;
+    transform: scale(0.86) translateY(2vh);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tv-foto-ganador,
+  .tv-ganador .nombre,
+  .tv-ganador .puntos {
+    animation: none;
+  }
+}
+
+.tv-nota {
+  margin: 1.5vh 0 0;
+  font-size: 1.1vw;
+  color: #94a3b8;
+  text-align: center;
+}

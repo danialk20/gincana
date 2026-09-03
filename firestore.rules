@@ -1,0 +1,56 @@
+rules_version = '2';
+
+// Seguridad de la gincana.
+//
+// No hay usuarios ni contraseñas: la app entra con sesión anónima. Estas reglas
+// exigen que exista esa sesión y validan la forma de cada documento, para que
+// nadie pueda escribir basura desde fuera de la app. El PIN de cada estación es
+// un control operativo dentro de la app (que un juez no toque la estación de
+// otro), no una barrera de seguridad.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function haySesion() {
+      return request.auth != null;
+    }
+
+    match /equipos/{equipoId} {
+      allow read: if haySesion();
+
+      allow create, update: if haySesion()
+        && request.resource.data.id == equipoId
+        && request.resource.data.keys().hasOnly(
+             ['id', 'nombre', 'orden', 'color', 'integrantes', 'fotoDataUrl'])
+        && request.resource.data.nombre is string
+        && request.resource.data.nombre.size() <= 80
+        && request.resource.data.orden is int
+        && request.resource.data.integrantes is list
+        && request.resource.data.integrantes.size() <= 20;
+
+      allow delete: if haySesion();
+    }
+
+    match /resultados/{resultadoId} {
+      allow read: if haySesion();
+
+      allow create, update: if haySesion()
+        && request.resource.data.id == resultadoId
+        && request.resource.data.keys().hasOnly(
+             ['id', 'pruebaId', 'equipoId', 'valores', 'notas', 'actualizadoEn', 'juez'])
+        && request.resource.data.pruebaId is string
+        && request.resource.data.equipoId is string
+        && request.resource.data.valores is map
+        && request.resource.data.valores.size() <= 12
+        && request.resource.data.notas is string
+        && request.resource.data.notas.size() <= 500;
+
+      allow delete: if haySesion();
+    }
+
+    // Todo lo demás queda cerrado.
+    match /{documento=**} {
+      allow read, write: if false;
+    }
+  }
+}
